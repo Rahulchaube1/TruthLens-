@@ -11,11 +11,13 @@ class ModelLoader:
         self.video_detector = None
         self.audio_detector = None
         self.image_detector = None
+        self.text_detector = None
 
     async def load_all(self):
         from ml.video_detector import VideoDetector
         from ml.audio_detector import AudioDetector
         from ml.image_detector import ImageDetector
+        from ml.text_detector import TextDetector
 
         logger.info("Initialising VideoDetector…")
         self.video_detector = VideoDetector()
@@ -28,5 +30,9 @@ class ModelLoader:
         logger.info("Initialising ImageDetector…")
         self.image_detector = ImageDetector()
         await self.image_detector.load()
+
+        logger.info("Initialising TextDetector…")
+        self.text_detector = TextDetector()
+        await self.text_detector.load()
 
         logger.info("All models ready.")
