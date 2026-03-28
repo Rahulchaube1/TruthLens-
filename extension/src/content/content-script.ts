@@ -44,7 +44,7 @@ async function detectPageMedia(): Promise<MediaInfo | null> {
     (img) =>
       img.naturalWidth > 200 &&
       img.naturalHeight > 200 &&
-      img.src.startsWith("http")
+      img.src.startsWith("http://") || img.src.startsWith("https://")
   );
 
   if (images.length > 0) {

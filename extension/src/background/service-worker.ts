@@ -1,6 +1,6 @@
 /// <reference types="chrome" />
 
-const API_BASE = "http://localhost:8000";
+const API_BASE = import.meta.env.VITE_API_BASE ?? "http://localhost:8000";
 
 // Install alarm for periodic checks
 chrome.runtime.onInstalled.addListener(() => {
