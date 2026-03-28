@@ -56,8 +56,11 @@ class ImageDetector:
         from PIL import Image
         import io, base64
 
+        def _pad_b64(s: str) -> str:
+            return s + "=" * (-len(s) % 4)
+
         try:
-            raw = base64.b64decode(image_b64 + "==")
+            raw = base64.b64decode(_pad_b64(image_b64))
             img = Image.open(io.BytesIO(raw)).convert("RGB")
         except Exception as exc:
             logger.error("Image decode failed: %s", exc)

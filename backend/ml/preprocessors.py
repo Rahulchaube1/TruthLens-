@@ -9,10 +9,15 @@ import numpy as np
 logger = logging.getLogger(__name__)
 
 
+def _pad_base64(b64: str) -> str:
+    """Add necessary padding to a base64 string."""
+    return b64 + "=" * (-len(b64) % 4)
+
+
 def decode_base64_image(b64: str) -> np.ndarray:
     """Decode a base64 string to an RGB numpy array."""
     from PIL import Image
-    data = base64.b64decode(b64 + "==")
+    data = base64.b64decode(_pad_base64(b64))
     img = Image.open(io.BytesIO(data)).convert("RGB")
     return np.array(img)
 
@@ -41,7 +46,7 @@ def extract_frames_from_b64(frames_b64: List[str]) -> List[np.ndarray]:
 def decode_base64_audio(b64: str) -> Tuple[np.ndarray, int]:
     """Decode base64 audio to (waveform_float32, sample_rate)."""
     import soundfile as sf
-    data = base64.b64decode(b64 + "==")
+    data = base64.b64decode(_pad_base64(b64))
     buf = io.BytesIO(data)
     waveform, sr = sf.read(buf, dtype="float32", always_2d=False)
     return waveform, sr

@@ -76,7 +76,12 @@ export default function Popup() {
         url: currentTab?.url,
         result: {
           type,
-          is_fake: data.is_deepfake ?? data.is_cloned ?? data.is_ai_generated,
+          is_fake:
+            type === "video"
+              ? Boolean(data.is_deepfake)
+              : type === "audio"
+              ? Boolean(data.is_cloned)
+              : Boolean(data.is_ai_generated),
           confidence: data.confidence,
           risk_level: data.risk_level ?? (data.is_cloned ? "high" : "low"),
           details: data,

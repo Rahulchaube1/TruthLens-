@@ -15,7 +15,15 @@ router = APIRouter()
 security = HTTPBearer(auto_error=False)
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-SECRET_KEY = os.getenv("JWT_SECRET_KEY", "change-me-in-production-super-secret-key-xyz")
+_DEFAULT_SECRET = "change-me-in-production-super-secret-key-xyz"
+SECRET_KEY = os.getenv("JWT_SECRET_KEY", _DEFAULT_SECRET)
+if SECRET_KEY == _DEFAULT_SECRET:
+    import warnings
+    warnings.warn(
+        "JWT_SECRET_KEY is not set — using insecure default. "
+        "Set the JWT_SECRET_KEY environment variable before deploying to production.",
+        stacklevel=1,
+    )
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24  # 24 hours
 
